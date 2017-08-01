@@ -28,7 +28,7 @@ end
 m = torch.load('umich-stacked-hourglass.t7')   -- Load pre-trained model
 
 if arg[1] == 'demo' then
-    idxs = torch.Tensor({695, 3611, 2486, 7424, 10032, 5, 4829})
+    idxs = torch.Tensor({10032})
     -- If all the MPII images are available, use the following line to see a random sampling of images
     -- idxs = torch.randperm(a.nsamples):sub(1,10)
 else
@@ -72,6 +72,7 @@ for i = 1,nsamples do
         preds_hm:mul(4) -- Change to input scale
         local dispImg = drawOutput(inp, hm, preds_hm[1])
         w = image.display{image=dispImg,win=w}
+        image.save('res.jpg', dispImg)
         sys.sleep(3)
     end
 
