@@ -25,7 +25,7 @@ else
     return
 end
 
-m = torch.load('umich-stacked-hourglass.t7')   -- Load pre-trained model
+m = torch.load('final_model.t7')   -- Load pre-trained model
 
 if arg[1] == 'demo' then
     idxs = torch.Tensor({10032})
