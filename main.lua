@@ -25,7 +25,7 @@ else
     return
 end
 
-m = torch.load('final_model.t7')   -- Load pre-trained model
+m = torch.load('umich-stacked-hourglass.t7')   -- Load pre-trained model
 
 if arg[1] == 'demo' then
     idxs = torch.Tensor({10032})
@@ -98,7 +98,7 @@ end
 
 if arg[1] == 'eval' then
     -- Calculate distances given each set of predictions
-    local labels = {'valid-example','valid-ours'}
+    local labels = {'valid-example','preds'}
     local dists = {}
     for i = 1,#labels do
         local predFile = hdf5.open('preds/' .. labels[i] .. '.h5','r')
