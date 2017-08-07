@@ -50,7 +50,7 @@ end
 
 for i = 1,nsamples do
     -- Set up input image
-    local im = image.load('~/hg_train/data/mpii/images/' .. a['images'][idxs[i]])
+    local im = image.load('/home/guoqiang/hg_train/data/mpii/images/' .. a['images'][idxs[i]])
     local center = a['center'][idxs[i]]
     local scale = a['scale'][idxs[i]]
     local inp = crop(im, center, scale, 0, 256)
