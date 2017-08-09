@@ -25,7 +25,7 @@ else
     return
 end
 
-m = torch.load('final_model.t7')   -- Load pre-trained model
+m = torch.load('/home/guoqiang/hg_train/exp/mpii/chg2/final_model.t7')   -- Load pre-trained model
 
 if arg[1] == 'demo' then
     idxs = torch.Tensor({10032})
