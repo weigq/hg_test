@@ -1,23 +1,24 @@
 paths.dofile('residual.lua')
+paths.dofile('HRresidual.lua')
 
 local function hourglass(n, numIn, numOut, inp)
     -- Upper branch
-    local up1 = Residual(numIn,256)(inp)
-    local up2 = Residual(256,256)(up1)
-    local up4 = Residual(256,numOut)(up2)
+    local up1 = HRResidual(numIn,256)(inp)
+    local up2 = HRResidual(256,256)(up1)
+    local up4 = HRResidual(256,numOut)(up2)
 
     -- Lower branch
     local pool = nnlib.SpatialMaxPooling(2,2,2,2)(inp)
-    local low1 = Residual(numIn,256)(pool)
-    local low2 = Residual(256,256)(low1)
-    local low5 = Residual(256,256)(low2)
+    local low1 = HRResidual(numIn,256)(pool)
+    local low2 = HRResidual(256,256)(low1)
+    local low5 = HRResidual(256,256)(low2)
     local low6
     if n > 1 then
         low6 = hourglass(n-1,256,numOut,low5)
     else
-        low6 = Residual(256,numOut)(low5)
+        low6 = HRResidual(256,numOut)(low5)
     end
-    local low7 = Residual(numOut,numOut)(low6)
+    local low7 = HRResidual(numOut,numOut)(low6)
     local up5 = nn.SpatialUpSamplingNearest(2)(low7)
 
     -- Bring two branches together
