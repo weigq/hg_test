@@ -1,3 +1,6 @@
+--- function:
+--- HRResidual()
+
 local conv = nnlib.SpatialConvolution
 local batchnorm = nn.SpatialBatchNormalization
 local relu = nnlib.ReLU
@@ -28,12 +31,26 @@ end
 
 
 
+-- HRbranch
+local function HRbranch(numIn, numOut)
+    return nn.Sequential()
+        :add(batchnorm(numIn))
+        :add(relu(true))
+        :add(nn.SpatialMaxPooling(2,2,2,2))
+        :add(conv(numIn,numOut,3,3,1,1,1,1))
+        :add(batchnorm(numOut))
+        :add(relu(true))
+        :add(conv(numOut,numOut,3,3,1,1,1,1))
+        :add(nn.SpatialUpSamplingNearest(2))
+end
+
 
 -- Residual block
-function Residual(numIn,numOut)
+function HRResidual(numIn,numOut)
     return nn.Sequential()
         :add(nn.ConcatTable()
             :add(convBlock(numIn,numOut))
-            :add(skipLayer(numIn,numOut)))
+            :add(skipLayer(numIn,numOut))
+            :add(HRbranch(numIn, numOut)))
         :add(nn.CAddTable(true))
 end
